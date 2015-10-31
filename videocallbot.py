@@ -15,3 +15,15 @@
 # ---
 # Copyright (C) 2015 - Filipe de O. Saraiva <mail@filipesaraiva.info>
 #
+
+from twx.botapi import TelegramBot
+
+# load config.py
+exec(open('./config.py').read())
+
+# bot configuration
+bot = TelegramBot(botToken)
+bot.update_bot_info().wait()
+
+# website address for creation of video calls
+conferencesSite = 'https://appear.in/'
