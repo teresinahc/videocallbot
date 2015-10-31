@@ -17,6 +17,16 @@
 #
 
 from twx.botapi import TelegramBot
+import requests
+
+# function to create random rooms in the conferences website
+# for the moment it is using the appear.in API to create
+# funny names for the rooms
+def createRoom():
+    roomNameJson = requests.get('https://api.appear.in/random-room-name')
+    roomName = roomNameJson.json()['roomName']
+    roomAddress = conferencesSite + roomName
+    return roomAddress
 
 # load config.py
 exec(open('./config.py').read())
@@ -26,4 +36,4 @@ bot = TelegramBot(botToken)
 bot.update_bot_info().wait()
 
 # website address for creation of video calls
-conferencesSite = 'https://appear.in/'
+conferencesSite = 'https://appear.in'
