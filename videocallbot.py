@@ -24,14 +24,21 @@ import requests
 # Main function to creation of the room, the message, and send
 # the reply to the user.
 @route('/', method='POST')
-def action():
+def handle():
     updateJson = request.body.read().decode('utf-8')
     update = json.loads(updateJson)
 
     chat = extractChat(update)
-    message = createMessage(update)
 
-    bot.send_message(chat, message).wait()
+    if update['message']['text'] == '/start':
+        keyboard = createKeyboard()
+        bot.send_message(chat, '', reply_markup=keyboard).wait()
+        return keyboard
+
+    if update['message']['text'] == 'Create video call room':
+        message = createMessage(update)
+        bot.send_message(chat, message).wait()
+        return message
 
 # Extract chat identifier
 def extractChat(update):
