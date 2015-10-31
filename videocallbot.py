@@ -33,12 +33,10 @@ def handle():
     if update['message']['text'] == '/start':
         keyboard = createKeyboard()
         bot.send_message(chat, '', reply_markup=keyboard).wait()
-        return keyboard
 
     if update['message']['text'] == 'Create video call room':
         message = createMessage(update)
         bot.send_message(chat, message).wait()
-        return message
 
 # Extract chat identifier
 def extractChat(update):
