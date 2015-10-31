@@ -17,8 +17,10 @@
 #
 
 from bottle import route, run, request
+from datetime import datetime as time
 from twx.botapi import TelegramBot, ReplyKeyboardMarkup
 import json
+import os.path
 import requests
 
 # Main function to creation of the room, the message, and send
@@ -37,6 +39,8 @@ def handle():
     if update['message']['text'] == 'Create video call room':
         message = createMessage(update)
         bot.send_message(chat, message).wait()
+        numRooms = numRooms + numRooms
+        writeLog()
 
 # Extract chat identifier
 def extractChat(update):
@@ -72,6 +76,27 @@ def createRoom():
     roomAddress = conferencesSite + roomName
     return roomAddress
 
+# How many rooms were created? This function will write this
+# information in a file for each 500 rooms created.
+def writeLog():
+    if numRooms % 500 == 0:
+        file = open('numRooms.log', 'a')
+        file.write(time.now().strftime('%Y-%m-%d') + ' ' + str(numRooms) + '\n')
+        file.close()
+
+# Read numRooms.log and initialize numRooms with the previous number
+# of rooms created. If there is not numRooms.log file, initialize the
+# number of rooms with 0.
+def readNumRooms():
+    if os.path.exists('numRooms.log'):
+        file = open('numRooms.log', 'r')
+        line = file.readlines()[-1]
+        rooms = int(line.split(' ')[-1])
+        file.close()
+    else:
+        rooms = 0
+    return rooms
+
 # Load config.py
 exec(open('./config.py').read())
 
@@ -81,6 +106,9 @@ bot.update_bot_info().wait()
 
 # Website address for creation of video calls
 conferencesSite = 'https://appear.in'
+
+# Count the number of rooms created
+numRooms = readNumRooms()
 
 # The bot will listen for requests.
 run(host=webhookAddress, port=webhookPort)
