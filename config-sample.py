@@ -15,3 +15,5 @@
 # ---
 # Copyright (C) 2015 - Filipe de O. Saraiva <mail@filipesaraiva.info>
 #
+
+botToken = ''
