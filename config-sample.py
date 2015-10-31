@@ -16,8 +16,12 @@
 # Copyright (C) 2015 - Filipe de O. Saraiva <mail@filipesaraiva.info>
 #
 
+# Bot token provide by @BotFather
 botToken = ''
 
+# Web address to listen the requests
 webhookAddress = ''
 
-webhookPort = ''
+# Port to listen the requests - the value must to be one
+# of the follow integer numbers: 443, 80, 88, or 8443
+webhookPort = 
