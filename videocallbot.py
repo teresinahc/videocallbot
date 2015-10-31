@@ -17,7 +17,7 @@
 #
 
 from bottle import route, run, request
-from twx.botapi import TelegramBot
+from twx.botapi import TelegramBot, ReplyKeyboardMarkup
 import json
 import requests
 
@@ -36,6 +36,11 @@ def action():
 # Extract chat identifier
 def extractChat(update):
     return update['message']['chat']['id']
+
+# Create custom application keyboard
+def createKeyboard():
+    keyboard = [['Create video call room']]
+    return ReplyKeyboardMarkup.create(keyboard)
 
 # Create the message to be sent. This function will be accountable for
 # create all elements of a message.
