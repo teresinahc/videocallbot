@@ -18,6 +18,7 @@
 
 from bottle import route, run, request
 from twx.botapi import TelegramBot
+import json
 import requests
 
 # Main function to creation of the room, the message, and send
@@ -28,13 +29,29 @@ def action():
     update = json.loads(updateJson)
 
     chat = extractChat(update)
-    roomAddress = createRoom()
+    message = createMessage(update)
 
-    bot.send_message(chat, roomAddress).wait()
+    bot.send_message(chat, message).wait()
 
 # Extract chat identifier
 def extractChat(update):
     return update['message']['chat']['id']
+
+# Create the message to be sent. This function will be accountable for
+# create all elements of a message.
+def createMessage(update):
+    senderName = extractSenderName(update)
+    roomAddress = createRoom()
+    return  'Hi, ' + senderName + 'wants to make a video call with you!\n'\
+    + 'Click at the address ' + roomAddress + '\n\n'\
+    + '@VideoCallBot, bringing video calls to Telegram!'
+
+# Extract sender name from the update message
+def extractSenderName(update):
+    senderFirstName = update['message']['from']['first_name']
+    senderLastName = update['message']['from']['last_name']
+    senderName = senderFirstName + ' ' + senderLastName
+    return senderName
 
 # Function to create random room in the conferences website.
 # For the moment it is using the appear.in API to create
