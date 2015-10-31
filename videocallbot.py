@@ -16,8 +16,25 @@
 # Copyright (C) 2015 - Filipe de O. Saraiva <mail@filipesaraiva.info>
 #
 
+from bottle import route, run, request
 from twx.botapi import TelegramBot
 import requests
+
+# Main function to creation of the room, the message, and send
+# the reply to the user.
+@route('/', method='POST')
+def action():
+    updateJson = request.body.read().decode('utf-8')
+    update = json.loads(updateJson)
+
+    chat = extractChat(update)
+    roomAddress = createRoom()
+
+    bot.send_message(chat, roomAddress).wait()
+
+# Extract chat identifier
+def extractChat(update):
+    return update['message']['chat']['id']
 
 # Function to create random room in the conferences website.
 # For the moment it is using the appear.in API to create
@@ -37,3 +54,6 @@ bot.update_bot_info().wait()
 
 # Website address for creation of video calls
 conferencesSite = 'https://appear.in'
+
+# The bot will listen for requests.
+run(host=webhookAddress, port=webhookPort)

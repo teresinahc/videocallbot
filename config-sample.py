@@ -17,3 +17,7 @@
 #
 
 botToken = ''
+
+webhookAddress = ''
+
+webhookPort = ''
