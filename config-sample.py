@@ -19,9 +19,10 @@
 # Bot token provide by @BotFather
 botToken = ''
 
-# Web address to listen the requests
-webhookAddress = ''
-
 # Port to listen the requests - the value must to be one
 # of the follow integer numbers: 443, 80, 88, or 8443
 webhookPort = 
+
+# Web address to listen the requests - the string operations
+# below shows the example of URL presented by Telegram Bot API
+webhookAddress = '' + botToken
