@@ -16,7 +16,7 @@
 # Copyright (C) 2015 - Filipe de O. Saraiva <mail@filipesaraiva.info>
 #
 
-from bottle import route, run, request
+from bottle import route, run, request, server_names
 from datetime import datetime as time
 from twx.botapi import TelegramBot, ReplyKeyboardMarkup
 import json
@@ -100,6 +100,9 @@ def readNumRooms():
 # Load config.py
 exec(open('./config.py').read())
 
+# Load config.py
+exec(open('./sslserver.py').read())
+
 # Bot configuration
 bot = TelegramBot(botToken)
 bot.set_webhook(webhookAddress + '/' + str(webhookPort), cert)
@@ -112,4 +115,5 @@ conferencesSite = 'https://appear.in'
 numRooms = readNumRooms()
 
 # The bot will listen for requests.
-run(host=webhookAddress, port=webhookPort)
+server_names['sslcherrypy'] = SSLCherryPy
+run(host=webhookAddress, port=webhookPort, server='sslcherrypy')

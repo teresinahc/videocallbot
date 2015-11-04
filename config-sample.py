@@ -27,6 +27,8 @@ certFile = open(certName, 'rb')
 certInfo = InputFileInfo(certName, certFile, 'text/plain')
 cert = InputFile(certificateFile, certInfo)
 
+keyName = ''
+
 # Port to listen the requests - the value must to be one
 # of the follow integer numbers: 443, 80, 88, or 8443
 webhookPort = 
