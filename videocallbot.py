@@ -102,6 +102,7 @@ exec(open('./config.py').read())
 
 # Bot configuration
 bot = TelegramBot(botToken)
+bot.set_webhook(webhookAddress + '/' + str(webhookPort), cert)
 bot.update_bot_info().wait()
 
 # Website address for creation of video calls
