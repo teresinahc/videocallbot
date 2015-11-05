@@ -75,10 +75,10 @@ def createRoom():
 
 # How many rooms were created? This function will write this
 # information in a file for each 500 rooms created.
-def writeLog(numRooms):
+def writeLog(rooms):
     if rooms % 500 == 0:
         file = open('numRooms.log', 'a')
-        file.write(time.now().strftime('%Y-%m-%d') + ' ' + str(numRooms) + '\n')
+        file.write(time.now().strftime('%Y-%m-%d') + ' ' + str(rooms) + '\n')
         file.close()
 
 # Read numRooms.log and initialize numRooms with the previous number
