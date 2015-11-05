@@ -16,27 +16,22 @@
 # Copyright (C) 2015 - Filipe de O. Saraiva <mail@filipesaraiva.info>
 #
 
-from bottle import route, run, request, server_names
 from datetime import datetime as time
-from twx.botapi import TelegramBot, ReplyKeyboardMarkup
+from twx.botapi import TelegramBot, Update, Chat, ReplyKeyboardMarkup, User
 import json
 import os.path
 import requests
 
 # Main function to creation of the room, the message, and send
 # the reply to the user.
-@route('/', method='POST')
-def handle():
-    updateJson = request.body.read().decode('utf-8')
-    update = json.loads(updateJson)
-
+def handle(update):
     chat = extractChat(update)
 
-    if update['message']['text'] == '/start':
+    if update.message.text == '/start':
         keyboard = createKeyboard()
         bot.send_message(chat, '', reply_markup=keyboard).wait()
 
-    if update['message']['text'] == 'Create video call room':
+    if update.message.text == 'Create video call room':
         global numRooms
         message = createMessage(update)
         bot.send_message(chat, message).wait()
@@ -45,7 +40,7 @@ def handle():
 
 # Extract chat identifier
 def extractChat(update):
-    return update['message']['chat']['id']
+    return update.message.chat.id
 
 # Create custom application keyboard
 def createKeyboard():
@@ -63,9 +58,9 @@ def createMessage(update):
 
 # Extract sender name from the update message
 def extractSenderName(update):
-    senderFirstName = update['message']['from']['first_name']
-    senderLastName = update['message']['from']['last_name']
-    senderName = senderFirstName + ' ' + senderLastName
+    senderFirstName = update.message.sender.first_name
+    senderLastName = update.message.sender.last_name
+    senderName = str(senderFirstName) + ' ' + str(senderLastName)
     return senderName
 
 # Function to create random room in the conferences website.
@@ -103,7 +98,6 @@ exec(open('./config.py').read())
 
 # Bot configuration
 bot = TelegramBot(botToken)
-bot.set_webhook(webhookAddress + '/' + str(webhookPort), cert)
 bot.update_bot_info().wait()
 
 # Website address for creation of video calls
@@ -112,6 +106,15 @@ conferencesSite = 'https://appear.in'
 # Count the number of rooms created
 numRooms = readNumRooms()
 
-# The bot will listen for requests.
-server_names['sslcherrypy'] = SSLCherryPy
-run(host=webhookAddress, port=webhookPort, server='sslcherrypy')
+# Updates received
+offset = 0
+
+# The bot will get updates
+while True:
+    updates = bot.get_updates(offset=offset).wait()
+    try:
+        offset = updates[-1].update_id + 1
+    except (IndexError):
+        pass
+    for update in updates:
+        handle(update)
