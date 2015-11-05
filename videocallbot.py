@@ -29,9 +29,10 @@ def handle(update):
 
     if update.message.text == '/start':
         keyboard = createKeyboard()
-        bot.send_message(chat, '', reply_markup=keyboard).wait()
+        bot.send_message(chat, 'Press the button if you need me',
+                         reply_markup=keyboard).wait()
 
-    if update.message.text == 'Create video call room':
+    if update.message.text == 'Create a video call room':
         global numRooms
         message = createMessage(update)
         bot.send_message(chat, message).wait()
@@ -44,7 +45,7 @@ def extractChat(update):
 
 # Create custom application keyboard
 def createKeyboard():
-    keyboard = [['Create video call room']]
+    keyboard = [['Create a video call room']]
     return ReplyKeyboardMarkup.create(keyboard)
 
 # Create the message to be sent. This function will be accountable for
@@ -52,7 +53,7 @@ def createKeyboard():
 def createMessage(update):
     senderName = extractSenderName(update)
     roomAddress = createRoom()
-    return  'Hi, ' + senderName + 'wants to make a video call with you!\n'\
+    return  'Hi, ' + senderName + ' wants to make a video call with you!\n'\
     + 'Click at the address ' + roomAddress + '\n\n'\
     + '@VideoCallBot, bringing video calls to Telegram!'
 
