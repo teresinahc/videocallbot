@@ -16,23 +16,5 @@
 # Copyright (C) 2015 - Filipe de O. Saraiva <mail@filipesaraiva.info>
 #
 
-from twx.botapi import InputFile, InputFileInfo
-
 # Bot token provide by @BotFather
 botToken = ''
-
-# Public certificate for the webhook communication
-certName = ''
-certFile = open(certName, 'rb')
-certInfo = InputFileInfo(certName, certFile, 'text/plain')
-cert = InputFile(certificateFile, certInfo)
-
-keyName = ''
-
-# Port to listen the requests - the value must to be one
-# of the follow integer numbers: 443, 80, 88, or 8443
-webhookPort = 
-
-# Web address to listen the requests - the string operations
-# below shows the example of URL presented by Telegram Bot API
-webhookAddress = '' + botToken
