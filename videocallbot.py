@@ -37,10 +37,11 @@ def handle():
         bot.send_message(chat, '', reply_markup=keyboard).wait()
 
     if update['message']['text'] == 'Create video call room':
+        global numRooms
         message = createMessage(update)
         bot.send_message(chat, message).wait()
-        numRooms = numRooms + numRooms
-        writeLog()
+        numRooms = numRooms + 1
+        writeLog(numRooms)
 
 # Extract chat identifier
 def extractChat(update):
@@ -78,8 +79,8 @@ def createRoom():
 
 # How many rooms were created? This function will write this
 # information in a file for each 500 rooms created.
-def writeLog():
-    if numRooms % 500 == 0:
+def writeLog(numRooms):
+    if rooms % 500 == 0:
         file = open('numRooms.log', 'a')
         file.write(time.now().strftime('%Y-%m-%d') + ' ' + str(numRooms) + '\n')
         file.close()
