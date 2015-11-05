@@ -101,9 +101,6 @@ def readNumRooms():
 # Load config.py
 exec(open('./config.py').read())
 
-# Load config.py
-exec(open('./sslserver.py').read())
-
 # Bot configuration
 bot = TelegramBot(botToken)
 bot.set_webhook(webhookAddress + '/' + str(webhookPort), cert)
