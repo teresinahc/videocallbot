@@ -113,9 +113,12 @@ offset = 0
 # The bot will get updates
 while True:
     updates = bot.get_updates(offset=offset).wait()
-    try:
-        offset = updates[-1].update_id + 1
-    except (IndexError):
-        pass
+
+    if updates != []:
+        try:
+            offset = updates[-1].update_id + 1
+        except (IndexError, AttributeError):
+            pass
+
     for update in updates:
         handle(update)
